@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -35,9 +36,30 @@
   <body>
     <div id="buffer"></div>
     <div id="content"></div>
-    <div id="foot">This is a test, kindly ignore</div>
+    <div id="foot">Arena</div>
   </body>
   <script>
+    function isWebview() {
+      var standalone = window.navigator.standalone,
+        userAgent = window.navigator.userAgent.toLowerCase(),
+        safari = /safari/.test(userAgent),
+        ios = /iphone|ipod|ipad/.test(userAgent);
+
+      if (ios) {
+        if (!standalone && safari) {
+          return false;
+        } else if (!standalone && !safari) {
+          return true;
+        }
+      } else {
+        if (userAgent.includes('wv')) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+
     const key = window.localStorage.getItem('key-iip');
     if (key) {
       document.getElementById('content').innerHTML = key;
@@ -46,5 +68,8 @@
       window.localStorage.setItem('key-iip', newkey);
       document.getElementById('content').innerHTML = newkey;
     }
+    document.getElementById('foot').innerHTML = isWebview()
+      ? 'Arena YES'
+      : 'Arena NO';
   </script>
 </html>
